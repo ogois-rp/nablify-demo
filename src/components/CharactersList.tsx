@@ -4,12 +4,11 @@ import { CHARACTERS_QUERY } from '../queries/characters'
 import { FilterBar } from './FilterBar'
 import { CharacterCard } from './CharacterCard'
 import { Pagination } from './Pagination'
+import { useCharacterFilters } from '../hooks/useCharacterFilters'
 import { CharacterModal } from './CharacterModal'
 
 export function CharactersList() {
-  const [status, setStatus] = useState('')
-  const [species, setSpecies] = useState('')
-  const [page, setPage] = useState(1)
+  const { status, species, page, setPage, handleStatusChange, handleSpeciesChange } = useCharacterFilters()
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const { data, loading, error } = useQuery(CHARACTERS_QUERY, {
@@ -19,16 +18,6 @@ export function CharactersList() {
       species: species || null,
     },
   })
-
-  const handleStatusChange = (value: string) => {
-    setStatus(value)
-    setPage(1)
-  }
-
-  const handleSpeciesChange = (value: string) => {
-    setSpecies(value)
-    setPage(1)
-  }
 
   if (loading) return <p className="text-center mt-10 text-gray-500">Loading...</p>
   if (error) return <p className="text-center mt-10 text-red-500">Error: {error.message}</p>
