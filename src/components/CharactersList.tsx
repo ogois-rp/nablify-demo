@@ -4,11 +4,13 @@ import { CHARACTERS_QUERY } from '../queries/characters'
 import { FilterBar } from './FilterBar'
 import { CharacterCard } from './CharacterCard'
 import { Pagination } from './Pagination'
+import { CharacterModal } from './CharacterModal'
 
 export function CharactersList() {
   const [status, setStatus] = useState('')
   const [species, setSpecies] = useState('')
   const [page, setPage] = useState(1)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const { data, loading, error } = useQuery(CHARACTERS_QUERY, {
     variables: {
@@ -49,6 +51,7 @@ export function CharactersList() {
             <CharacterCard
               key={character.id}
               character={character}
+              onClick={() => setSelectedId(character.id ?? null)}
             />
           )
         })}
@@ -62,6 +65,13 @@ export function CharactersList() {
       onNext={() => setPage((p) => p + 1)}
       onPrev={() => setPage((p) => p - 1)}
     />
+
+    {selectedId && (
+      <CharacterModal
+        id={selectedId}
+        onClose={() => setSelectedId(null)}
+      />
+    )}
     </div>
   )
 }
