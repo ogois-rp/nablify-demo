@@ -8,16 +8,17 @@ import { useCharacterFilters } from '../hooks/useCharacterFilters'
 import { CharacterModal } from './CharacterModal'
 
 export function CharactersList() {
-  const { status, species, page, setPage, handleStatusChange, handleSpeciesChange } = useCharacterFilters()
+  const { status, species, name, page, setPage, handleStatusChange, handleSpeciesChange, handleNameChange } = useCharacterFilters()
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const { data, loading, error } = useQuery(CHARACTERS_QUERY, {
-    variables: {
-      page,
-      status: status || null,
-      species: species || null,
-    },
-  })
+  variables: {
+    page,
+    status: status || null,
+    species: species || null,
+    name: name || null,
+  },
+})
 
   if (loading) return <p className="text-center mt-10 text-gray-500">Loading...</p>
   if (error) return <p className="text-center mt-10 text-red-500">Error: {error.message}</p>
@@ -29,8 +30,10 @@ export function CharactersList() {
       <FilterBar
         status={status}
         species={species}
+        name={name}
         onStatusChange={handleStatusChange}
         onSpeciesChange={handleSpeciesChange}
+        onNameChange={handleNameChange}
       />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">

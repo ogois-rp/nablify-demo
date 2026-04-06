@@ -1,8 +1,8 @@
 import { graphql } from '../gql'
 
 export const CHARACTERS_QUERY = graphql(`
-  query GetCharacters($page: Int, $status: String, $species: String) {
-    characters(page: $page, filter: { status: $status, species: $species }) {
+  query GetCharacters($page: Int, $status: String, $species: String, $name: String) {
+    characters(page: $page, filter: { status: $status, species: $species, name: $name }) {
       info {
         count
         pages
