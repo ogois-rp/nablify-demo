@@ -6,6 +6,7 @@ import { CharacterCard } from './CharacterCard'
 import { Pagination } from './Pagination'
 import { useCharacterFilters } from '../hooks/useCharacterFilters'
 import { CharacterModal } from './CharacterModal'
+import { CharactersGridSkeleton } from './CharactersGridSkeleton'
 
 export function CharactersList() {
   const { status, species, name, page, setPage, handleStatusChange, handleSpeciesChange, handleNameChange } = useCharacterFilters()
@@ -20,8 +21,20 @@ export function CharactersList() {
   },
 })
 
-  if (loading) return <p className="text-center mt-10 text-gray-500">Loading...</p>
   if (error) return <p className="text-center mt-10 text-red-500">Error: {error.message}</p>
+  if (loading) return (
+  <div>
+    <FilterBar
+      status={status}
+      species={species}
+      name={name}
+      onStatusChange={handleStatusChange}
+      onSpeciesChange={handleSpeciesChange}
+      onNameChange={handleNameChange}
+    />
+    <CharactersGridSkeleton />
+  </div>
+)
 
   const info = data?.characters?.info
 
